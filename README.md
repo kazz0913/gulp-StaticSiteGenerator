@@ -14,8 +14,10 @@ JavaScriptに関する部分はwebpackに投げてます。
 - ES6のトランスパイル設定済み
 
 ## コマンド
-  # build
-  npm run gulp
+```
+# build
+npm run gulp
 
-  # watch
-  npm run dev
+# watch
+npm run dev
+```
