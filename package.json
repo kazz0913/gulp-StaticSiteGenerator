@@ -1,0 +1,24 @@
+{
+  "name": "gulp_staticgenerator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gulp": "gulp",
+    "dev": "gulp dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "babel-loader": "^8.0.5",
+    "browser-sync": "^2.26.3",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-ejs": "^3.3.0",
+    "gulp-sass": "^4.0.2",
+    "webpack": "^4.29.6",
+    "webpack-stream": "^5.2.1"
+  }
+}

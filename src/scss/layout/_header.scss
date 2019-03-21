@@ -1,0 +1,12 @@
+.header {
+  background-color: #fff;
+  &__wrapper {
+    margin: 0 auto;
+    max-width: 1000px;
+  }
+}
+
+.test {
+  background: #000;
+  color: #000;
+}

@@ -1,0 +1,9 @@
+# VSCode
+.vscode
+
+# Dependency directories
+node_modules/
+
+#generate
+dist
+
