@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
+const sassGlob = require('gulp-sass-glob');
 const ejs = require('gulp-ejs');
 const autoprefixer = require('gulp-autoprefixer');
 const webpack = require('webpack');
@@ -14,6 +15,7 @@ const browserSyncOption = {
 
 gulp.task('scss', () => {
   return gulp.src('./src/scss/*.scss')
+    .pipe(sassGlob())
     .pipe(sass({
       outputStyle: 'expanded'
     }))
