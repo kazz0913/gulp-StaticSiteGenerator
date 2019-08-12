@@ -6,6 +6,7 @@ const autoprefixer = require('gulp-autoprefixer');
 const imagemin = require('gulp-imagemin');
 const mozjpeg = require('imagemin-mozjpeg');
 const pngquant = require('imagemin-pngquant');
+const changed = require('gulp-changed')
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const browserSync = require('browser-sync').create();
@@ -52,6 +53,7 @@ gulp.task('ejs', () => {
 
 gulp.task('imagemin', () => {
   return gulp.src('./src/img/**/*.{jpg,png,gif,svg}')
+  .pipe(changed('./dist/assets/img'))
   .pipe(imagemin(imageminOptions))
   .pipe(gulp.dest('./dist/assets/img'))
 })
