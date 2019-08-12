@@ -1,6 +1,10 @@
 # VSCode
 .vscode
 
+# Invisible Files
+.DS_Store
+Thumbs.db
+
 # Dependency directories
 node_modules/
 
