@@ -20,8 +20,5 @@
     "gulp-sass": "^4.0.2",
     "webpack": "^4.29.6",
     "webpack-stream": "^5.2.1"
-  },
-  "dependencies": {
-    "npm-check-updates": "^3.1.13"
   }
 }
