@@ -18,6 +18,7 @@
     "gulp-autoprefixer": "^6.0.0",
     "gulp-ejs": "^3.3.0",
     "gulp-sass": "^4.0.2",
+    "gulp-sass-glob": "^1.1.0",
     "webpack": "^4.29.6",
     "webpack-stream": "^5.2.1"
   }
