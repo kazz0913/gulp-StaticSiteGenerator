@@ -1,8 +1,14 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const sassGlob = require('gulp-sass-glob');
+const packageImporter = require('node-sass-package-importer');
+const postcss = require('gulp-postcss');
+const cssnano = require('cssnano');
+const mqpacker = require('css-mqpacker');
+const sortCSSmq = require('sort-css-media-queries');
+const autoprefixer = require('autoprefixer');
+const cssDeclarationSoter = require('css-declaration-sorter');
 const ejs = require('gulp-ejs');
-const autoprefixer = require('gulp-autoprefixer');
 const imagemin = require('gulp-imagemin');
 const mozjpeg = require('imagemin-mozjpeg');
 const pngquant = require('imagemin-pngquant');
@@ -12,6 +18,40 @@ const webpackStream = require('webpack-stream');
 const browserSync = require('browser-sync').create();
 
 const webpackConfig = require('./webpack.config');
+
+const paths = {
+  src: {
+    scss: './src/scss/',
+    js: './src/js/',
+    img: './src/img/'
+  },
+  dist: {
+    css: './dist/assets/css/',
+    js: './dist/assets/js/',
+    img: './dist/assets/img/'
+  }
+}
+
+const sassOptions = {
+  importer: packageImporter({
+    extensions: ['scss', 'css']
+  }),
+  outputStyle: 'expanded',
+}
+
+
+const postCssOptions = [
+  autoprefixer({
+    grid: 'autoplace'
+  }),
+  mqpacker({
+    sort: sortCSSmq
+  }),
+  cssDeclarationSoter({
+    order: 'alphabetically' // 'alphabetically' or 'smacss' or 'concentric-css'
+  })
+  // cssnano({ autoprefixer: false })
+]
 
 const imageminOptions = [
   pngquant(
@@ -34,13 +74,11 @@ const browserSyncOption = {
 }
 
 gulp.task('scss', () => {
-  return gulp.src('./src/scss/*.scss')
+  return gulp.src(paths.src.scss + 'style.scss')
     .pipe(sassGlob())
-    .pipe(sass({
-      outputStyle: 'expanded'
-    }))
-    .pipe(autoprefixer())
-    .pipe(gulp.dest('./dist/css'))
+    .pipe(sass(sassOptions))
+    .pipe(postcss(postCssOptions))
+    .pipe(gulp.dest('./dist/assets/css'))
 })
 
 gulp.task('ejs', () => {
