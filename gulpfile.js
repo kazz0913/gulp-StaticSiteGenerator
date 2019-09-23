@@ -1,9 +1,10 @@
 const gulp = require('gulp');
+const rename = require('gulp-rename');
 const sass = require('gulp-sass');
 const sassGlob = require('gulp-sass-glob');
 const packageImporter = require('node-sass-package-importer');
 const postcss = require('gulp-postcss');
-const cssnano = require('cssnano');
+const cleanCss = require('gulp-clean-css');
 const mqpacker = require('css-mqpacker');
 const sortCSSmq = require('sort-css-media-queries');
 const autoprefixer = require('autoprefixer');
@@ -39,7 +40,6 @@ const sassOptions = {
   outputStyle: 'expanded',
 }
 
-
 const postCssOptions = [
   autoprefixer({
     grid: 'autoplace'
@@ -50,7 +50,6 @@ const postCssOptions = [
   cssDeclarationSoter({
     order: 'alphabetically' // 'alphabetically' or 'smacss' or 'concentric-css'
   })
-  // cssnano({ autoprefixer: false })
 ]
 
 const imageminOptions = [
@@ -78,7 +77,16 @@ gulp.task('scss', () => {
     .pipe(sassGlob())
     .pipe(sass(sassOptions))
     .pipe(postcss(postCssOptions))
-    .pipe(gulp.dest('./dist/assets/css'))
+    .pipe(gulp.dest(paths.dist.css))
+})
+
+gulp.task('cssmin', () => {
+  return gulp.src([`${paths.dist.css}**/*.css`, `!${paths.dist.css}**/*.min.css`])
+  .pipe(cleanCss())
+  .pipe(rename({
+    suffix: '.min'
+  }))
+  .pipe(gulp.dest(paths.dist.css))
 })
 
 gulp.task('ejs', () => {
