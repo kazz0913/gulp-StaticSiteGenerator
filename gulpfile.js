@@ -5,20 +5,22 @@ const sass = require('gulp-sass');
 const sassGlob = require('gulp-sass-glob');
 const packageImporter = require('node-sass-package-importer');
 const postcss = require('gulp-postcss');
-const cleanCss = require('gulp-clean-css');
+const autoprefixer = require('autoprefixer');
 const mqpacker = require('css-mqpacker');
 const sortCSSmq = require('sort-css-media-queries');
-const autoprefixer = require('autoprefixer');
+const cleanCss = require('gulp-clean-css');
 const cssDeclarationSoter = require('css-declaration-sorter');
 const ejs = require('gulp-ejs');
-const imagemin = require('gulp-imagemin');
-const mozjpeg = require('imagemin-mozjpeg');
-const pngquant = require('imagemin-pngquant');
-const changed = require('gulp-changed')
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const webpackDevConfig = require('./config/webpack.dev');
 const webpackProdConfig = require('./config/webpack.prod');
+const imagemin = require('gulp-imagemin');
+const mozjpeg = require('imagemin-mozjpeg');
+const pngquant = require('imagemin-pngquant');
+const changed = require('gulp-changed');
+const plumber = require('gulp-plumber');
+const notify = require('gulp-notify');
 const browserSync = require('browser-sync').create();
 
 const paths = {
@@ -71,12 +73,14 @@ const imageminOptions = [
 ]
 
 const browserSyncOption = {
-  server: './dist'
+  server: './dist',
+  notify: false
 }
 
 gulp.task('ejs', () => {
   return gulp.src(
     [`${paths.src.html}**/*.ejs`, `!${paths.src.html}**/_*.ejs`])
+  .pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
   .pipe(ejs({}))
   .pipe(rename({ extname: '.html' }))
   .pipe(replace(/[\s\S]*?(<!DOCTYPE)/, '$1'))
@@ -86,6 +90,7 @@ gulp.task('ejs', () => {
 
 gulp.task('scss', () => {
   return gulp.src(paths.src.scss + 'style.scss')
+    .pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
     .pipe(sassGlob())
     .pipe(sass(sassOptions))
     .pipe(postcss(postCssOptions))
@@ -103,10 +108,10 @@ gulp.task('cssmin', () => {
 
 gulp.task('bundle', () => {
   const webpackConfig = process.env.NODE_ENV === 'development' ? webpackDevConfig : webpackProdConfig;
-  return webpackStream(webpackConfig, webpack)
+  return plumber({ errorHandler: notify.onError('<%= error.message %>') })
+  .pipe(webpackStream(webpackConfig, webpack))
   .pipe(gulp.dest(paths.dist.js))
 })
-// plumber({ errorHandler: notify.onError('<%= error.message %>') })
 
 gulp.task('imagemin', () => {
   return gulp.src('./src/img/**/*.{jpg,png,gif,svg}')
