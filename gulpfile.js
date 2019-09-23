@@ -17,9 +17,9 @@ const pngquant = require('imagemin-pngquant');
 const changed = require('gulp-changed')
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
+const webpackDevConfig = require('./config/webpack.dev');
+const webpackProdConfig = require('./config/webpack.prod');
 const browserSync = require('browser-sync').create();
-
-const webpackConfig = require('./webpack.config');
 
 const paths = {
   src: {
@@ -74,6 +74,16 @@ const browserSyncOption = {
   server: './dist'
 }
 
+gulp.task('ejs', () => {
+  return gulp.src(
+    [`${paths.src.html}**/*.ejs`, `!${paths.src.html}**/_*.ejs`])
+  .pipe(ejs({}))
+  .pipe(rename({ extname: '.html' }))
+  .pipe(replace(/[\s\S]*?(<!DOCTYPE)/, '$1'))
+  .pipe(gulp.dest('./dist'))
+  //.pipe(browserSync.stream())
+})
+
 gulp.task('scss', () => {
   return gulp.src(paths.src.scss + 'style.scss')
     .pipe(sassGlob())
@@ -91,26 +101,18 @@ gulp.task('cssmin', () => {
   .pipe(gulp.dest(paths.dist.css))
 })
 
-gulp.task('ejs', () => {
-  return gulp.src(
-    [`${paths.src.html}**/*.ejs`, `!${paths.src.html}**/_*.ejs`])
-  .pipe(ejs({}))
-  .pipe(rename({ extname: '.html' }))
-  .pipe(replace(/[\s\S]*?(<!DOCTYPE)/, '$1'))
-  .pipe(gulp.dest('./dist'))
-  //.pipe(browserSync.stream())
+gulp.task('bundle', () => {
+  const webpackConfig = process.env.NODE_ENV === 'development' ? webpackDevConfig : webpackProdConfig;
+  return webpackStream(webpackConfig, webpack)
+  .pipe(gulp.dest(paths.dist.js))
 })
+// plumber({ errorHandler: notify.onError('<%= error.message %>') })
 
 gulp.task('imagemin', () => {
   return gulp.src('./src/img/**/*.{jpg,png,gif,svg}')
   .pipe(changed('./dist/assets/img'))
   .pipe(imagemin(imageminOptions))
   .pipe(gulp.dest('./dist/assets/img'))
-})
-
-gulp.task('bundle', () => {
-  return webpackStream(webpackConfig, webpack)
-    .pipe(gulp.dest('./dist/js'))
 })
 
 gulp.task('serve', (done) => {
