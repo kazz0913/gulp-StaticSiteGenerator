@@ -1,5 +1,6 @@
 const gulp = require('gulp');
 const rename = require('gulp-rename');
+const replace = require('gulp-replace');
 const sass = require('gulp-sass');
 const sassGlob = require('gulp-sass-glob');
 const packageImporter = require('node-sass-package-importer');
@@ -22,6 +23,7 @@ const webpackConfig = require('./webpack.config');
 
 const paths = {
   src: {
+    html: './src/html/',
     scss: './src/scss/',
     js: './src/js/',
     img: './src/img/'
@@ -91,10 +93,12 @@ gulp.task('cssmin', () => {
 
 gulp.task('ejs', () => {
   return gulp.src(
-      ['./src/html/*.ejs', '!./src/html/_*.ejs']
-    )
-    .pipe(ejs({ msg: 'Hello Gulp!' }, {}, { ext: '.html' }))
-    .pipe(gulp.dest('./dist'))
+    [`${paths.src.html}**/*.ejs`, `!${paths.src.html}**/_*.ejs`])
+  .pipe(ejs({}))
+  .pipe(rename({ extname: '.html' }))
+  .pipe(replace(/[\s\S]*?(<!DOCTYPE)/, '$1'))
+  .pipe(gulp.dest('./dist'))
+  //.pipe(browserSync.stream())
 })
 
 gulp.task('imagemin', () => {
