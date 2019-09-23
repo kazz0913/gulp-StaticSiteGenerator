@@ -1,11 +1,21 @@
 <% var title = 'アバウトです'; %>
 <% var description = 'アバウトの説明文'; %>
-<%- include('../templates/_head', {title: title}) -%>
+<% var path = '..'; %>
+<%-
+  include('../templates/_head', {
+    title: title,
+    path: path
+  })
+-%>
 <body>
 <%- include('../templates/_header') -%>
 <main>
   <p>aboutです</p>
 </main>
-<%- include('../templates/_footer') -%>
+<%-
+  include('../templates/_footer', {
+    path: path
+  })
+-%>
 </body>
 </html>
