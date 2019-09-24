@@ -145,11 +145,11 @@ gulp.task('watch', () => {
 
 gulp.task('dev', gulp.series('serve', 'watch'))
 
-gulp.task('default',
-  gulp.series(
-    gulp.parallel('ejs', 'scss', 'bundle'),
-    (done) => {
-      done();
-    }
+gulp.task(
+  'build',
+  gulp.parallel(
+    gulp.series('scss', 'cssmin'),
+    gulp.task('bundle'),
+    gulp.task('imagemin')
   )
 )
