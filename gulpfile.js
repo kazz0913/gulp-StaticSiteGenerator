@@ -114,10 +114,11 @@ gulp.task('bundle', () => {
 })
 
 gulp.task('imagemin', () => {
-  return gulp.src('./src/img/**/*.{jpg,png,gif,svg}')
-  .pipe(changed('./dist/assets/img'))
+  return gulp.src(`${paths.src.img}**/*.{jpg,png,gif,svg}`)
+  .pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
+  .pipe(changed(paths.dist.img))
   .pipe(imagemin(imageminOptions))
-  .pipe(gulp.dest('./dist/assets/img'))
+  .pipe(gulp.dest(paths.dist.img))
 })
 
 gulp.task('serve', done => {
@@ -139,6 +140,7 @@ gulp.task('watch', () => {
   gulp.watch(`${paths.src.html}**/*.ejs`, gulp.task('ejs-watch'))
   gulp.watch(`${paths.src.scss}**/*.scss`, gulp.series('scss', 'cssmin'))
   gulp.watch(`${paths.src.js}**/*.js`, gulp.task('js-watch'))
+  gulp.watch(`${paths.src.img}**`, gulp.task('imagemin'))
 })
 
 gulp.task('dev', gulp.series('serve', 'watch'))
