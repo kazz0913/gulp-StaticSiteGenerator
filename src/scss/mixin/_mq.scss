@@ -1,0 +1,21 @@
+//--------------------------------
+// Mixin:media queries
+//--------------------------------
+
+@mixin mq-pc {
+  @media screen and (max-width: $maxWidth) {
+    @content;
+  }
+}
+
+@mixin mq-tablet {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin mq-mobile {
+  @media screen and (max-width: 480px) {
+    @content;
+  }
+}

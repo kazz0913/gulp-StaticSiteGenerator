@@ -1,0 +1,23 @@
+<% var title = 'サービスです'; -%>
+<% var description = 'サービスの説明文'; %>
+<% var path = '..'; %>
+<%-
+  include('../templates/_head', {
+    title: title,
+    path: path
+  })
+-%>
+<body>
+<%- include('../templates/_header') -%>
+<main>
+  <p>indexです</p>
+  <p>テストです</p>
+  <p>test</p>
+</main>
+<%-
+  include('../templates/_footer', {
+    path: path
+  })
+-%>
+</body>
+</html>

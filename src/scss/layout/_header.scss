@@ -1,12 +1,23 @@
 .header {
-  background-color: #fff;
+  background-color: $headerBg;
+  color: red;
   &__wrapper {
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: $maxWidth;
   }
 }
 
 .test {
   background: #000;
-  color: #000;
+  color: #fff;
+  font-size: 2.0rem;
+  @include mq-pc {
+    font-size: 1.8rem;
+  }
+  @include mq-tablet {
+    font-size: 1.6rem;
+  }
+  @include mq-mobile {
+    font-size: 1.4rem;
+  }
 }

@@ -1,0 +1,36 @@
+//--------------------------------
+// Common
+//--------------------------------
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  color: #333;
+  font-family: YakuHanJP, -apple-system, BlinkMacSystemFont, Roboto, "游ゴシック体", YuGothic, "Yu Gothic Medium", sans-serif;
+  font-size: 1.6rem;
+  line-height: 2.0;
+  letter-spacing: 0.1em;
+}
+
+h1, h2, h3, h4, h5, h6, strong {
+  font-family: YakuHanJP, -apple-system, BlinkMacSystemFont, Roboto, "游ゴシック体", YuGothic, "Yu Gothic", sans-serif;
+  font-weight: 700;
+}
+
+a {
+  color: $txtColor;
+  text-decoration: none;
+  transition: all .3s ease-out;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  height: auto;
+  width: 100%;
+  vertical-align: bottom;
+}

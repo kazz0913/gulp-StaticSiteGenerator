@@ -1,3 +1,6 @@
 .footer {
-  background: #000;
+  background: $footerBg;
+  @include mq-pc {
+    font-size: 1.6rem;
+  }
 }
