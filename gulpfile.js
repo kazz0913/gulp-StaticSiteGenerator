@@ -9,7 +9,7 @@ const autoprefixer = require('autoprefixer');
 const mqpacker = require('css-mqpacker');
 const sortCSSmq = require('sort-css-media-queries');
 const cleanCss = require('gulp-clean-css');
-const cssDeclarationSoter = require('css-declaration-sorter');
+const cssDeclarationSorter = require('css-declaration-sorter');
 const ejs = require('gulp-ejs');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
@@ -41,7 +41,7 @@ const sassOptions = {
   importer: packageImporter({
     extensions: ['scss', 'css']
   }),
-  outputStyle: 'expanded',
+  outputStyle: 'expanded'
 }
 
 const postCssOptions = [
@@ -51,7 +51,7 @@ const postCssOptions = [
   mqpacker({
     sort: sortCSSmq
   }),
-  cssDeclarationSoter({
+  cssDeclarationSorter({
     order: 'alphabetically' // 'alphabetically' or 'smacss' or 'concentric-css'
   })
 ]
@@ -74,7 +74,7 @@ const imageminOptions = [
 
 const browserSyncOption = {
   server: './dist',
-  notify: false
+  notify: false,
 }
 
 gulp.task('ejs', () => {
@@ -85,7 +85,6 @@ gulp.task('ejs', () => {
   .pipe(rename({ extname: '.html' }))
   .pipe(replace(/[\s\S]*?(<!DOCTYPE)/, '$1'))
   .pipe(gulp.dest('./dist'))
-  //.pipe(browserSync.stream())
 })
 
 gulp.task('scss', () => {
@@ -95,6 +94,7 @@ gulp.task('scss', () => {
     .pipe(sass(sassOptions))
     .pipe(postcss(postCssOptions))
     .pipe(gulp.dest(paths.dist.css))
+    .pipe(browserSync.stream())
 })
 
 gulp.task('cssmin', () => {
@@ -120,24 +120,28 @@ gulp.task('imagemin', () => {
   .pipe(gulp.dest('./dist/assets/img'))
 })
 
-gulp.task('serve', (done) => {
+gulp.task('serve', done => {
   browserSync.init(browserSyncOption);
   done();
 })
 
-gulp.task('reload', (done) => {
+gulp.task('ejs-watch', gulp.series('ejs', done => {
   browserSync.reload();
   done();
-})
+}))
+
+gulp.task('js-watch', gulp.series('bundle', done => {
+  browserSync.reload();
+  done();
+}))
 
 gulp.task('watch', () => {
-  gulp.watch('./src/html/**/*.ejs', gulp.task('ejs'))
-  gulp.watch('./src/scss/**/*.scss', gulp.task('scss'))
-  gulp.watch('./src/**/*.js', gulp.task('bundle'))
-  gulp.watch('./dist/**/*', gulp.task('reload'))
+  gulp.watch(`${paths.src.html}**/*.ejs`, gulp.task('ejs-watch'))
+  gulp.watch(`${paths.src.scss}**/*.scss`, gulp.series('scss', 'cssmin'))
+  gulp.watch(`${paths.src.js}**/*.js`, gulp.task('js-watch'))
 })
 
-gulp.task('dev', gulp.series('ejs', 'scss', 'bundle', 'serve', 'watch'))
+gulp.task('dev', gulp.series('serve', 'watch'))
 
 gulp.task('default',
   gulp.series(
