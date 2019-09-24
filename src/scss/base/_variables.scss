@@ -1,0 +1,43 @@
+//--------------------------------
+// Variable
+//--------------------------------
+
+//--------------------------------
+// Background Color
+//--------------------------------
+$headerBg: #fff;
+$spMenuBg: #f8f8f8;
+$pageHeaderBg: #f8f8f8;
+$breadcrumbBg: #fff;
+$mainBg: #f8f8f8;
+$footerBg: #323232;
+$copyrightBg: #323232;
+
+//--------------------------------
+// Text Color
+//--------------------------------
+$txtColor: #333;
+$mainColor: #a953a8;
+$breadcrumbTxt: #888;
+$footerTxt: #efefef;
+$copyrightTxt: #cacaca;
+
+
+//--------------------------------
+// Width
+//--------------------------------
+$maxWidth: 960px;
+
+
+//--------------------------------
+// Typography
+//--------------------------------
+
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap');
+$NotoSansJp: 'Noto Sans JP', sans-serif;
+
+// Yaku Han Jp
+$yakuhanjp-eot-use: false;
+$yakuhanjp-cdn-use: true;
+@import "~yakuhanjp/src/scss/yakuhanjp.scss";

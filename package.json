@@ -39,6 +39,7 @@
   "dependencies": {
     "css-mqpacker": "^7.0.0",
     "ress": "^1.2.2",
-    "sort-css-media-queries": "^1.4.3"
+    "sort-css-media-queries": "^1.4.3",
+    "yakuhanjp": "^3.2.0"
   }
 }
