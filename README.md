@@ -18,8 +18,7 @@ JavaScriptに関する部分はwebpackに投げてます。
 
 ## インストール
 ```shell
-git clone --depth 1 git@github.com:kazz0913/gulp-StaticSiteGenerator.git && cd gulp-StaticSiteGenerator
- && rm -rf ./.git ./README.md
+git clone --depth 1 git@github.com:kazz0913/gulp-StaticSiteGenerator.git && cd gulp-StaticSiteGenerator && rm -rf ./.git ./README.md
 ```
 
 ## コマンド
