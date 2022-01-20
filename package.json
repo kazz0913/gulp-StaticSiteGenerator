@@ -22,7 +22,7 @@
     "gulp-changed": "^4.0.0",
     "gulp-clean-css": "^4.2.0",
     "gulp-ejs": "^5.1.0",
-    "gulp-imagemin": "^6.0.0",
+    "gulp-imagemin": "^8.0.0",
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^8.0.0",
