@@ -16,8 +16,8 @@ import cssDeclarationSorter from 'css-declaration-sorter';
 import ejs from 'gulp-ejs'
 import webpack from 'webpack';
 import webpackStream from 'webpack-stream';
-import webpackDevConfig from './config/webpack.dev';
-import webpackProdConfig from './config/webpack.prod';
+import webpackDevConfig from './config/webpack.dev.js';
+import webpackProdConfig from './config/webpack.prod.js';
 import imagemin from 'gulp-imagemin';
 import mozjpeg from 'imagemin-mozjpeg';
 import pngquant from 'imagemin-pngquant';
