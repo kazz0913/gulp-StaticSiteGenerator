@@ -18,8 +18,7 @@ import webpack from 'webpack';
 import webpackStream from 'webpack-stream';
 import webpackDevConfig from './config/webpack.dev.js';
 import webpackProdConfig from './config/webpack.prod.js';
-import imagemin from 'gulp-imagemin';
-import mozjpeg from 'imagemin-mozjpeg';
+import imagemin, { gifsicle, mozjpeg, optipng, svgo } from 'gulp-imagemin';
 import pngquant from 'imagemin-pngquant';
 import { create as bsCreate } from 'browser-sync';
 const browserSync = bsCreate()
@@ -67,10 +66,9 @@ const imageminOptions = [
   mozjpeg({
     quality: 60
   }),
-  imagemin.gifsicle(),
-  imagemin.jpegtran(),
-  imagemin.optipng(),
-  imagemin.svgo()
+  gifsicle(),
+  optipng(),
+  svgo()
 ]
 
 const browserSyncOption = {
