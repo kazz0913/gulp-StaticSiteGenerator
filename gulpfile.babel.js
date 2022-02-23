@@ -4,7 +4,8 @@ import replace from 'gulp-replace'
 import changed from 'gulp-changed';
 import plumber from 'gulp-plumber';
 import notify from 'gulp-notify';
-import sass from 'gulp-sass'
+import dartSass from 'sass'
+import gulpSass from 'gulp-sass'
 import sassGlob from 'gulp-sass-glob';
 import packageImporter from 'node-sass-package-importer'
 import postcss from 'gulp-postcss';
@@ -22,6 +23,7 @@ import imagemin, { gifsicle, mozjpeg, optipng, svgo } from 'gulp-imagemin';
 import pngquant from 'imagemin-pngquant';
 import { create as bsCreate } from 'browser-sync';
 const browserSync = bsCreate()
+const sass = gulpSass(dartSass)
 
 const paths = {
   src: {
