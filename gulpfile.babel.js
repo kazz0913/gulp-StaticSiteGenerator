@@ -4,7 +4,8 @@ import replace from 'gulp-replace'
 import changed from 'gulp-changed';
 import plumber from 'gulp-plumber';
 import notify from 'gulp-notify';
-import sass from 'gulp-sass'
+import dartSass from 'sass'
+import gulpSass from 'gulp-sass'
 import sassGlob from 'gulp-sass-glob';
 import packageImporter from 'node-sass-package-importer'
 import postcss from 'gulp-postcss';
@@ -16,13 +17,13 @@ import cssDeclarationSorter from 'css-declaration-sorter';
 import ejs from 'gulp-ejs'
 import webpack from 'webpack';
 import webpackStream from 'webpack-stream';
-import webpackDevConfig from './config/webpack.dev';
-import webpackProdConfig from './config/webpack.prod';
-import imagemin from 'gulp-imagemin';
-import mozjpeg from 'imagemin-mozjpeg';
+import webpackDevConfig from './config/webpack.dev.js';
+import webpackProdConfig from './config/webpack.prod.js';
+import imagemin, { gifsicle, mozjpeg, optipng, svgo } from 'gulp-imagemin';
 import pngquant from 'imagemin-pngquant';
 import { create as bsCreate } from 'browser-sync';
 const browserSync = bsCreate()
+const sass = gulpSass(dartSass)
 
 const paths = {
   src: {
@@ -67,10 +68,9 @@ const imageminOptions = [
   mozjpeg({
     quality: 60
   }),
-  imagemin.gifsicle(),
-  imagemin.jpegtran(),
-  imagemin.optipng(),
-  imagemin.svgo()
+  gifsicle(),
+  optipng(),
+  svgo()
 ]
 
 const browserSyncOption = {

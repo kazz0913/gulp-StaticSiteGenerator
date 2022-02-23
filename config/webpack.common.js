@@ -1,7 +1,11 @@
-const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+export default {
   entry: './src/js/index.js',
   output: {
     path: path.resolve(__dirname, '../dist/assets/js')
