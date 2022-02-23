@@ -1,27 +1,29 @@
-const gulp = require('gulp');
-const rename = require('gulp-rename');
-const replace = require('gulp-replace');
-const sass = require('gulp-sass');
-const sassGlob = require('gulp-sass-glob');
-const packageImporter = require('node-sass-package-importer');
-const postcss = require('gulp-postcss');
-const autoprefixer = require('autoprefixer');
-const mqpacker = require('css-mqpacker');
-const sortCSSmq = require('sort-css-media-queries');
-const cleanCss = require('gulp-clean-css');
-const cssDeclarationSorter = require('css-declaration-sorter');
-const ejs = require('gulp-ejs');
-const webpack = require('webpack');
-const webpackStream = require('webpack-stream');
-const webpackDevConfig = require('./config/webpack.dev');
-const webpackProdConfig = require('./config/webpack.prod');
-const imagemin = require('gulp-imagemin');
-const mozjpeg = require('imagemin-mozjpeg');
-const pngquant = require('imagemin-pngquant');
-const changed = require('gulp-changed');
-const plumber = require('gulp-plumber');
-const notify = require('gulp-notify');
-const browserSync = require('browser-sync').create();
+import gulp from 'gulp';
+import rename from 'gulp-rename'
+import replace from 'gulp-replace'
+import changed from 'gulp-changed';
+import plumber from 'gulp-plumber';
+import notify from 'gulp-notify';
+import dartSass from 'sass'
+import gulpSass from 'gulp-sass'
+import sassGlob from 'gulp-sass-glob';
+import packageImporter from 'node-sass-package-importer'
+import postcss from 'gulp-postcss';
+import autoprefixer from 'autoprefixer';
+import mqpacker from 'css-mqpacker';
+import sortCSSmq from 'sort-css-media-queries';
+import cleanCSS from 'gulp-clean-css'
+import cssDeclarationSorter from 'css-declaration-sorter';
+import ejs from 'gulp-ejs'
+import webpack from 'webpack';
+import webpackStream from 'webpack-stream';
+import webpackDevConfig from './config/webpack.dev.js';
+import webpackProdConfig from './config/webpack.prod.js';
+import imagemin, { gifsicle, mozjpeg, optipng, svgo } from 'gulp-imagemin';
+import pngquant from 'imagemin-pngquant';
+import { create as bsCreate } from 'browser-sync';
+const browserSync = bsCreate()
+const sass = gulpSass(dartSass)
 
 const paths = {
   src: {
@@ -44,7 +46,7 @@ const sassOptions = {
   outputStyle: 'expanded'
 }
 
-const postCssOptions = [
+const postCSSOptions = [
   autoprefixer({
     grid: 'autoplace'
   }),
@@ -66,10 +68,9 @@ const imageminOptions = [
   mozjpeg({
     quality: 60
   }),
-  imagemin.gifsicle(),
-  imagemin.jpegtran(),
-  imagemin.optipng(),
-  imagemin.svgo()
+  gifsicle(),
+  optipng(),
+  svgo()
 ]
 
 const browserSyncOption = {
@@ -92,14 +93,14 @@ gulp.task('scss', () => {
     .pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
     .pipe(sassGlob())
     .pipe(sass(sassOptions))
-    .pipe(postcss(postCssOptions))
+    .pipe(postcss(postCSSOptions))
     .pipe(gulp.dest(paths.dist.css))
     .pipe(browserSync.stream())
 })
 
 gulp.task('cssmin', () => {
   return gulp.src([`${paths.dist.css}**/*.css`, `!${paths.dist.css}**/*.min.css`])
-  .pipe(cleanCss())
+  .pipe(cleanCSS())
   .pipe(rename({
     suffix: '.min'
   }))
