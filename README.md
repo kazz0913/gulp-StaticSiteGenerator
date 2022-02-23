@@ -16,6 +16,11 @@ JavaScriptに関する部分はwebpackに投げてます。
 ## 想定環境
 - node v10.15.3
 
+## インストール
+```shell
+git clone --depth 1 git@github.com:kazz0913/gulp-StaticSiteGenerator.git && cd gulp-StaticSiteGenerator && rm -rf ./.git ./README.md
+```
+
 ## コマンド
 ```
 # install
