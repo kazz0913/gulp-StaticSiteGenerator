@@ -4,7 +4,7 @@ import replace from 'gulp-replace'
 import changed from 'gulp-changed';
 import plumber from 'gulp-plumber';
 import notify from 'gulp-notify';
-import dartSass from 'sass'
+import dartSass from 'sass';
 import gulpSass from 'gulp-sass'
 import sassGlob from 'gulp-sass-glob';
 import packageImporter from 'node-sass-package-importer'
@@ -75,82 +75,75 @@ const imageminOptions = [
 
 const browserSyncOption = {
   server: './dist',
-  notify: false,
+  notify: false
 }
 
-gulp.task('ejs', () => {
+function template() {
   return gulp.src(
     [`${paths.src.html}**/*.ejs`, `!${paths.src.html}**/_*.ejs`])
   .pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
   .pipe(ejs({}))
   .pipe(rename({ extname: '.html' }))
   .pipe(replace(/[\s\S]*?(<!DOCTYPE)/, '$1'))
-  .pipe(gulp.dest('./dist'))
-})
+  .pipe(gulp.dest('./dist'));
+}
 
-gulp.task('scss', () => {
+function scss() {
   return gulp.src(paths.src.scss + 'style.scss')
     .pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
     .pipe(sassGlob())
     .pipe(sass(sassOptions))
     .pipe(postcss(postCSSOptions))
     .pipe(gulp.dest(paths.dist.css))
-    .pipe(browserSync.stream())
-})
+    .pipe(browserSync.stream());
+}
 
-gulp.task('cssmin', () => {
+function cssmin() {
   return gulp.src([`${paths.dist.css}**/*.css`, `!${paths.dist.css}**/*.min.css`])
   .pipe(cleanCSS())
   .pipe(rename({
     suffix: '.min'
   }))
-  .pipe(gulp.dest(paths.dist.css))
-})
+  .pipe(gulp.dest(paths.dist.css));;
+}
 
-gulp.task('bundle', () => {
+function jsBundle() {
   const webpackConfig = process.env.NODE_ENV === 'development' ? webpackDevConfig : webpackProdConfig;
   return plumber({ errorHandler: notify.onError('<%= error.message %>') })
   .pipe(webpackStream(webpackConfig, webpack))
-  .pipe(gulp.dest(paths.dist.js))
-})
+  .pipe(gulp.dest(paths.dist.js));
+}
 
-gulp.task('imagemin', () => {
+function imageMinify() {
   return gulp.src(`${paths.src.img}**/*.{jpg,png,gif,svg}`)
   .pipe(plumber({ errorHandler: notify.onError('<%= error.message %>') }))
   .pipe(changed(paths.dist.img))
   .pipe(imagemin(imageminOptions))
-  .pipe(gulp.dest(paths.dist.img))
-})
+  .pipe(gulp.dest(paths.dist.img));
+}
 
-gulp.task('serve', done => {
+function serve(done) {
   browserSync.init(browserSyncOption);
   done();
-})
+}
 
-gulp.task('ejs-watch', gulp.series('ejs', done => {
+function liveReload(done) {
   browserSync.reload();
   done();
-}))
+}
 
-gulp.task('js-watch', gulp.series('bundle', done => {
-  browserSync.reload();
-  done();
-}))
+function watcher() {
+  gulp.watch(`${paths.src.html}**/*.ejs`, gulp.series(template, liveReload))
+  gulp.watch(`${paths.src.scss}**/*.scss`, scss)
+  gulp.watch(`${paths.src.js}**/*.js`, gulp.series(jsBundle, liveReload))
+  gulp.watch(`${paths.src.img}**`, imageMinify)
+}
 
-gulp.task('watch', () => {
-  gulp.watch(`${paths.src.html}**/*.ejs`, gulp.task('ejs-watch'))
-  gulp.watch(`${paths.src.scss}**/*.scss`, gulp.series('scss', 'cssmin'))
-  gulp.watch(`${paths.src.js}**/*.js`, gulp.task('js-watch'))
-  gulp.watch(`${paths.src.img}**`, gulp.task('imagemin'))
-})
+export const dev = gulp.series(serve, watcher)
 
-gulp.task('dev', gulp.series('serve', 'watch'))
-
-gulp.task(
-  'build',
-  gulp.parallel(
-    gulp.series('scss', 'cssmin'),
-    gulp.task('bundle'),
-    gulp.task('imagemin')
-  )
+export const build = gulp.parallel(
+  template,
+  gulp.series(scss, cssmin),
+  jsBundle,
+  imageMinify
 )
