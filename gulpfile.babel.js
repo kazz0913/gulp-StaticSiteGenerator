@@ -76,6 +76,7 @@ const imageminOptions = [
 const browserSyncOption = {
   server: './dist',
   notify: false,
+  open: false
 }
 
 gulp.task('ejs', () => {
